@@ -5,6 +5,7 @@ from __future__ import division, absolute_import, print_function
 
 from gstools.variogram.variogram import (estimate_structured,
                                          estimate_unstructured)
+from gstools.variogram import models
 
 
-__all__ = ['estimate']
+__all__ = ['estimate', 'models']
