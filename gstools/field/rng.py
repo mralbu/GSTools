@@ -31,6 +31,7 @@ class RNG(object):
         >>> r = RNG(dim = 2, seed=76386181534)
         >>> Z, k = r(model='gau', len_scale=10., mode_no=100)
     """
+
     def __init__(self, dim, seed=None):
         '''Initialize a random number generator
 
@@ -279,7 +280,7 @@ class RNG(object):
         self._seed = new_seed
         self._master_RNG_fct = rand.RandomState(new_seed)
         self._master_RNG = (lambda:
-                            self._master_RNG_fct.random_integers(2**16 - 1))
+                            self._master_RNG_fct.randint(1, 2**16 - 1))
 
     def __str__(self):
         return self.__repr__()

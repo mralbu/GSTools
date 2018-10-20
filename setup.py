@@ -6,12 +6,8 @@ import numpy
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 
-try:
-    from Cython.Build import cythonize
-except ImportError:
-    USE_CYTHON = False
-else:
-    USE_CYTHON = True
+from gstools import __version__ as VERSION
+
 
 DOCLINES = __doc__.split('\n')
 README = open('README.md').read()
@@ -32,23 +28,7 @@ CLASSIFIERS = [
 ]
 
 EXT_MODULES = []
-if USE_CYTHON:
-    EXT_MODULES += cythonize(os.path.join('gstools', 'variogram',
-                                          'estimator.pyx'))
-else:
-    EXT_MODULES += [Extension('gstools.variogram.estimator',
-                              [os.path.join('gstools',
-                                            'variogram',
-                                            'estimator.c')],
-                              include_dirs=[numpy.get_include()])]
-# This is the important part. By setting this compiler directive, cython will
-# embed signature information in docstrings. Sphinx then knows how to extract
-# and use those signatures.
 # python setup.py build_ext --inplace --> then sphinx build
-for ext in EXT_MODULES:
-    ext.cython_directives = {'embedsignature': True}
-# version import not possible due to cython (separate __version__ in __init__)
-VERSION = "0.4.0"
 
 setup_kw = {
     'name': 'gstools',
@@ -68,6 +48,7 @@ setup_kw = {
     'install_requires': [
         'numpy',
         'scipy',
+        'numba'
     ],
     'packages': find_packages(exclude=['tests*', 'docs*']),
     'ext_modules': EXT_MODULES,
